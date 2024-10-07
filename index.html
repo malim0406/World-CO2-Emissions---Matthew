@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>World CO₂ Emissions Visualisations</title>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #f0f0f0, #e8e8e8);
+      margin: 0;
+      padding: 0;
+    }
+    .title-container {
+      text-align: center;
+      padding: 20px;
+      background-color: #007bff; /* Blue background for title */
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      margin: 0;
+      position: relative;
+      border-radius: 12px; /* Adds rounded corners to the entire title area */
+    }
+    .title-container h1 {
+      font-size: 48px; /* Increased title size */
+      margin: 0;
+    }
+    .title-container h2 {
+      font-size: 22px; /* Increased subtitle size */
+      font-weight: normal;
+      margin: 10px 0 0 0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      width: 90%;
+      max-width: 1600px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    .chart {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      border: 3px solid #007bff; /* Blue border to make charts stand out */
+      transition: transform 0.3s ease;
+      flex-basis: 45%;
+      box-sizing: border-box;
+    }
+    .scatter-chart {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      border: 3px solid #007bff;
+      transition: transform 0.3s ease;
+      flex-basis: 90%;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    .chart:hover, .scatter-chart:hover {
+      transform: scale(1.05); /* Enhanced scale effect for more emphasis */
+    }
+    .chart-title {
+      font-size: 22px; /* Increased chart title size */
+      font-weight: 700;
+      color: #2b2b2b;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .download-button {
+      margin-top: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .download-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="title-container">
+    <h1>World CO₂ Emissions Visualisations</h1>
+    <h2>A comprehensive look at CO₂ emissions across the globe for different countries and years</h2>
+  </div>
+
+  <div class="container">
+    <div id="co2_map" class="chart">
+      <div class="chart-title">World CO₂ Emissions in 2022</div>
+      <button class="download-button" onclick="downloadChart('co2_map')">Download Chart</button>
+    </div>
+    <div id="annual_co2_bar_chart" class="chart">
+      <div class="chart-title">Annual CO₂ Emissions by Country (2022)</div>
+      <button class="download-button" onclick="downloadChart('annual_co2_bar_chart')">Download Chart</button>
+    </div>
+    <div id="co2_per_capita_chart" class="chart">
+      <div class="chart-title">CO₂ Emissions per Capita by Country (1750 - 2022)</div>
+      <button class="download-button" onclick="downloadChart('co2_per_capita_chart')">Download Chart</button>
+    </div>
+    <div id="co2_bubble_chart" class="chart">
+      <div class="chart-title">Cumulative CO₂ Emissions by Selected Countries</div>
+      <button class="download-button" onclick="downloadChart('co2_bubble_chart')">Download Chart</button>
+    </div>
+    <div id="scatter_co2_vs_gdp" class="scatter-chart">
+      <div class="chart-title">CO₂ Emissions per Capita vs. GDP per Capita (2022)</div>
+      <button class="download-button" onclick="downloadChart('scatter_co2_vs_gdp')">Download Chart</button>
+    </div>
+  </div>
+
+  <script>
+    // Rendering each chart using Vega-Embed with SVG renderer
+    vegaEmbed('#co2_map', 'world_co2_map.json', {renderer: 'svg'}).then(function(result) {
+      // Access the Vega view instance as result.view
+    }).catch(console.error);
+
+    vegaEmbed('#annual_co2_bar_chart', 'annual_co2_bar_chart.json', {renderer: 'svg'}).then(function(result) {
+      // Access the Vega view instance as result.view
+    }).catch(console.error);
+
+    vegaEmbed('#co2_per_capita_chart', 'co2_per_capita_chart.json', {renderer: 'svg'}).then(function(result) {
+      // Access the Vega view instance as result.view
+    }).catch(console.error);
+
+    vegaEmbed('#co2_bubble_chart', 'co2_bubble_chart.json', {renderer: 'svg'}).then(function(result) {
+      // Access the Vega view instance as result.view
+    }).catch(console.error);
+
+    vegaEmbed('#scatter_co2_vs_gdp', 'scatter_co2_vs_gdp_2022.json', {renderer: 'svg'}).then(function(result) {
+      // Access the Vega view instance as result.view
+    }).catch(console.error);
+
+    // Function to download the chart as SVG
+    function downloadChart(chartId) {
+      const chartElement = document.querySelector(`#${chartId} svg`);
+      if (chartElement) {
+        const svgData = new XMLSerializer().serializeToString(chartElement);
+        const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+        const url = URL.createObjectURL(svgBlob);
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.download = `${chartId}.svg`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      } else {
+        console.error("Chart not found");
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Cumulative CO₂ Emissions by Selected Countries (Bubble Chart)",
+  "data": {
+    "url": "cumulative-co2-emissions-region.csv"
+  },
+  "transform": [
+    {
+      "filter": {
+        "field": "Country",
+        "oneOf": [
+          "Australia", "Brazil", "Canada", "China", "France", "Germany",
+          "India", "Indonesia", "Japan", "Mexico", "Russia", "Saudi Arabia",
+          "South Africa", "United Kingdom", "United States"
+        ]
+      }
+    },
+    {
+      "calculate": "parseInt(datum.Year)",
+      "as": "Year"
+    },
+    {
+      "filter": {
+        "field": "Year",
+        "oneOf": [1750, 1800, 1850, 1900, 1950, 2000, 2022]
+      }
+    }
+  ],
+  "mark": {
+    "type": "circle",
+    "tooltip": true,
+    "opacity": 0.8
+  },
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "quantitative",
+      "title": "Year",
+      "scale": {
+        "domain": [1700, 2022]
+      },
+      "axis": {
+        "values": [1700, 1750, 1800, 1850, 1900, 1950, 2000, 2022],
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "Country",
+      "type": "nominal",
+      "title": "Country"
+    },
+    "size": {
+      "field": "Cumulative CO2 Emissions",
+      "type": "quantitative",
+      "title": "Cumulative Emissions (tons)",
+      "scale": {
+        "type": "linear",
+        "range": [800, 4000]
+      }
+    },
+    "color": {
+      "field": "Country",
+      "type": "nominal",
+      "legend": {
+        "title": "Country",
+        "orient": "bottom"
+      },
+      "scale": {
+        "scheme": "category20"
+      },
+      "condition": {
+        "param": "highlight",
+        "value": "#ff7f0e"
+      }
+    },
+    "opacity": {
+      "condition": {
+        "param": "highlight",
+        "value": 1
+      },
+      "value": 0.3
+    },
+    "tooltip": [
+      {
+        "field": "Year",
+        "type": "quantitative",
+        "title": "Year"
+      },
+      {
+        "field": "Country",
+        "type": "nominal",
+        "title": "Country"
+      },
+      {
+        "field": "Cumulative CO2 Emissions",
+        "type": "quantitative",
+        "title": "Cumulative Emissions (tons)",
+        "format": ",.0f"
+      }
+    ]
+  },
+  "title": {
+    "text": "Cumulative CO₂ Emissions by Selected Countries",
+    "subtitle": "A comparison of cumulative emissions from 1750 to 2022 at 50-year intervals",
+    "fontSize": 24,
+    "subtitleFontSize": 18,
+    "anchor": "start"
+  },
+  "width": 3000,
+  "height": 1000,
+  "background": "#f0f0f0",
+  "params": [
+    {
+      "name": "highlight",
+      "select": {
+        "type": "point",
+        "fields": ["Country"],
+        "on": "click"
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "CO₂ Emissions per Capita by Country (Area Chart)",
+  "data": {
+    "url": "co-emissions-per-capita.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "filter": {
+        "field": "Country",
+        "oneOf": [
+          "Australia", "Brazil", "Canada", "China", "France", "Germany", "India", "Indonesia", "Japan",
+          "Mexico", "Russia", "Saudi Arabia", "South Africa", "United Kingdom", "United States"
+        ]
+      }
+    }
+  ],
+  "mark": {
+    "type": "area",
+    "line": {
+      "color": "darkgray"
+    },
+    "tooltip": true,
+    "cornerRadiusTopLeft": 3,
+    "cornerRadiusTopRight": 3
+  },
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "temporal",
+      "axis": {
+        "title": "Year"
+      }
+    },
+    "y": {
+      "field": "Annual CO2 Emissions per Capita",
+      "type": "quantitative",
+      "stack": "zero",
+      "axis": {
+        "title": "CO₂ Emissions per Capita",
+        "grid": true,
+        "gridOpacity": 0.5,
+        "labelFontSize": 16,
+        "titleFontSize": 18,
+        "format": ",.0f"
+      }
+    },
+    "color": {
+      "field": "Country",
+      "type": "nominal",
+      "legend": {
+        "title": "Country",
+        "titleFontSize": 20,
+        "labelFontSize": 16,
+        "orient": "right"
+      },
+      "scale": {
+        "scheme": "category20"
+      }
+    },
+    "opacity": {
+      "condition": {
+        "param": "countrySelection",
+        "value": 1
+      },
+      "value": 0.2
+    },
+    "tooltip": [
+      {
+        "field": "Country",
+        "type": "nominal",
+        "title": "Country"
+      },
+      {
+        "field": "Year",
+        "type": "temporal",
+        "title": "Year"
+      },
+      {
+        "field": "Annual CO2 Emissions per Capita",
+        "type": "quantitative",
+        "title": "CO₂ Emissions per Capita",
+        "format": ",.0f"
+      }
+    ]
+  },
+  "width": 3000,
+  "height": 1000,
+  "title": {
+    "text": "CO₂ Emissions per Capita by Country (1750 - 2022)",
+    "subtitle": "Annual CO₂ Emissions per Capita for Top Emitters Over Time",
+    "fontSize": 24,
+    "subtitleFontSize": 18,
+    "anchor": "start"
+  },
+  "background": "#f0f0f0",
+  "params": [
+    {
+      "name": "countrySelection",
+      "select": {
+        "type": "point",
+        "fields": ["Country"],
+        "on": "click"
+      },
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "Australia", "Brazil", "Canada", "China", "France", "Germany",
+          "India", "Indonesia", "Japan", "Mexico", "Russia", "Saudi Arabia",
+          "South Africa", "United Kingdom", "United States"
+        ],
+        "labels": [
+          "All",
+          "Australia", "Brazil", "Canada", "China", "France", "Germany",
+          "India", "Indonesia", "Japan", "Mexico", "Russia", "Saudi Arabia",
+          "South Africa", "United Kingdom", "United States"
+        ],
+        "name": "Select a Country"
+      }
+    }
+  ]
+}

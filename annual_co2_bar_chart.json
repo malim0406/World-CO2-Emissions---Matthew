@@ -1,0 +1,121 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Annual CO₂ Emissions by Country (2022)",
+  "data": {
+    "url": "annual-co2-emissions-per-country.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum.Year == 2022"
+    },
+    {
+      "filter": {
+        "field": "Country",
+        "oneOf": [
+          "Australia", "Brazil", "Canada", "China", "France", "Germany",
+          "India", "Indonesia", "Japan", "Mexico", "Russia", "Saudi Arabia",
+          "South Africa", "United Kingdom", "United States"
+        ]
+      }
+    },
+    {
+      "filter": {
+        "param": "countrySelection",
+        "empty": true
+      }
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "tooltip": true,
+    "cornerRadiusTopLeft": 3,
+    "cornerRadiusTopRight": 3
+  },
+  "encoding": {
+    "x": {
+      "field": "Country",
+      "type": "nominal",
+      "sort": "-y",
+      "axis": {
+        "title": "Country",
+        "labelAngle": -45,
+        "labelFontSize": 16,
+        "titleFontSize": 18
+      }
+    },
+    "y": {
+      "field": "Annual CO2 emissions",
+      "type": "quantitative",
+      "axis": {
+        "title": "Annual CO₂ Emissions (in million tons)",
+        "grid": true,
+        "gridOpacity": 0.5,
+        "labelFontSize": 16,
+        "titleFontSize": 18,
+        "format": ",.0f"
+      }
+    },
+    "color": {
+      "field": "Country",
+      "type": "nominal",
+      "legend": {
+        "title": "Country",
+        "titleFontSize": 20,
+        "labelFontSize": 16,
+        "orient": "right"
+      },
+      "scale": {
+        "scheme": "category20"
+      }
+    },
+    "tooltip": [
+      {
+        "field": "Country",
+        "type": "nominal",
+        "title": "Country"
+      },
+      {
+        "field": "Annual CO2 emissions",
+        "type": "quantitative",
+        "title": "Total CO₂ Emissions (2022)",
+        "format": ",.0f"
+      }
+    ]
+  },
+  "title": {
+    "text": "Annual CO₂ Emissions by Country (2022)",
+    "subtitle": "Top Emitters Globally in 2022",
+    "fontSize": 24,
+    "subtitleFontSize": 18,
+    "anchor": "start"
+  },
+  "width": 3000,
+  "height": 1000,
+  "background": "#f0f0f0",
+  "params": [
+    {
+      "name": "countrySelection",
+      "select": {
+        "type": "point",
+        "fields": ["Country"],
+        "on": "click"
+      },
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "Australia", "Brazil", "Canada", "China", "France", "Germany",
+          "India", "Indonesia", "Japan", "Mexico", "Russia", "Saudi Arabia",
+          "South Africa", "United Kingdom", "United States"
+        ],
+        "labels": [
+          "All Countries",
+          "Australia", "Brazil", "Canada", "China", "France", "Germany",
+          "India", "Indonesia", "Japan", "Mexico", "Russia", "Saudi Arabia",
+          "South Africa", "United Kingdom", "United States"
+        ],
+        "name": "Select a Country: "
+      }
+    }
+  ]
+}
